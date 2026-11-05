@@ -60,7 +60,7 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 .foto{position:relative;aspect-ratio:4/3;background:#000;overflow:hidden;max-width:100%}
 .foto:not(.vazia)::before{content:"";position:absolute;inset:-24px;background:var(--img) center/cover no-repeat;filter:blur(18px) brightness(.45)}
 .foto:not(.vazia)::after{content:"";position:absolute;inset:0;background:var(--img) center/contain no-repeat}
-.foto .selo{z-index:1}
+.foto .selo{z-index:1;top:auto;bottom:10px;max-width:calc(100% - 20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .foto.vazia{background:#0f0c0a url(logo.jpg) center/45% no-repeat}
 .selo{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:600;background:rgba(0,0,0,.7)}
 .selo.disponivel{color:var(--ok)} .selo.plantel{color:var(--fogo2)} .selo.reservado{color:var(--res)} .selo.vendido{color:#aaa}
@@ -286,7 +286,8 @@ function idade(nasc){
 const bg = u => `style="background-image:url('${esc(u)}')"`;
 function fotoAttr(c, capa){ const u = (capa && c.capa) || (c.fotos && c.fotos[0]); return u ? `class="foto" style="--img:url('${esc(u)}')"` : `class="foto vazia"`; }
 function prefixoRegistro(raca, num){
-  if(!num || /registro|andamento|ABCCMM|ABQM/i.test(num)) return num || "";
+  num = String(num||"").replace(/\s*\(.*\)/, "").trim();
+  if(!num || /registro|andamento|ABCCMM|ABQM/i.test(num)) return num;
   if(/quarto de milha/i.test(raca||"")) return "ABQM " + num;
   if(/mangalarga/i.test(raca||"")) return "ABCCMM " + num;
   return num;
