@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLAMAR | Plantel e Competições</title>
+<meta name="description" content="GLAMAR: plantel de matrizes registradas, competições de marcha e produtos de genética selecionada em Minas Gerais.">
+<link rel="icon" href="logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0908; --bg2:#14100e; --card:#1b1512; --line:#2e2520;
+  --text:#f3ece6; --muted:#b5a89e; --fogo:#ff7a1a; --fogo2:#ffb347; --ok:#4cc38a; --res:#e6b84c;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 "Source Sans 3",system-ui,sans-serif}
+a{color:inherit}
+h1,h2,h3{font-family:Cinzel,serif;letter-spacing:.04em;margin:0 0 .5em}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+
+/* topo */
+header{position:sticky;top:0;z-index:20;background:rgba(11,9,8,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:12px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none}
+.marca img{width:46px;height:46px;border-radius:50%;border:1px solid var(--line)}
+.marca b{font-family:Cinzel,serif;font-size:1.15rem;letter-spacing:.12em}
+.menu{display:flex;gap:22px}
+.menu a{text-decoration:none;color:var(--muted);font-weight:600}
+.menu a:hover,.menu a.on{color:var(--fogo2)}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 10px;font-size:1.1rem}
+
+/* hero */
+.hero{position:relative;overflow:hidden;min-height:78vh;display:flex;align-items:center;
+  background:radial-gradient(ellipse at 75% 40%,rgba(255,122,26,.18),transparent 60%),var(--bg)}
+.hero .bg-fogo{position:absolute;right:-4%;top:0;height:100%;width:52%;object-fit:cover;object-position:center top;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 35%);mask-image:linear-gradient(to right,transparent,#000 35%);opacity:.95}
+.hero .txt{position:relative;max-width:560px;padding:64px 0}
+.hero .logo-hero{width:150px;height:150px;border-radius:50%;box-shadow:0 0 40px rgba(255,122,26,.25);margin-bottom:22px}
+.hero h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.1}
+.hero h1 span{color:var(--fogo)}
+.hero p{color:var(--muted);font-size:1.15rem}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.btn{display:inline-flex;white-space:nowrap;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:600;text-decoration:none;border:1px solid var(--line);cursor:pointer;font-size:1rem}
+.btn.fogo{background:linear-gradient(135deg,var(--fogo),#d94a00);border:none;color:#fff}
+.btn.zap{background:#1f9d55;border:none;color:#fff}
+.btn.sec{background:transparent;color:var(--text)}
+
+/* seções */
+section{padding:72px 0;border-top:1px solid var(--line)}
+.titulo{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+.titulo p{margin:0;color:var(--muted)}
+.filtros{display:flex;gap:8px;flex-wrap:wrap}
+.filtros select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
+
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:#5a3a24}
+.foto{position:relative;aspect-ratio:4/3;background:#000;overflow:hidden;max-width:100%}
+.foto:not(.vazia)::before{content:"";position:absolute;inset:-24px;background:var(--img) center/cover no-repeat;filter:blur(18px) brightness(.45)}
+.foto:not(.vazia)::after{content:"";position:absolute;inset:0;background:var(--img) center/contain no-repeat}
+.foto .selo{z-index:1}
+.foto.vazia{background:#0f0c0a url(logo.jpg) center/45% no-repeat}
+.selo{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:600;background:rgba(0,0,0,.7)}
+.selo.disponivel{color:var(--ok)} .selo.plantel{color:var(--fogo2)} .selo.reservado{color:var(--res)} .selo.vendido{color:#aaa}
+.card .corpo{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-size:1.1rem;margin:0}
+.meta{color:var(--muted);font-size:.92rem}
+.preco{margin-top:auto;padding-top:10px;font-weight:600;color:var(--fogo2)}
+.card .acoes{display:flex;gap:8px;padding:0 16px 16px}
+.card .acoes .btn{padding:8px 14px;font-size:.92rem;flex:1;justify-content:center}
+.vazio{color:var(--muted);padding:30px;border:1px dashed var(--line);border-radius:14px;text-align:center}
+
+.emb .par{font-family:Cinzel,serif;font-size:1.05rem}
+.emb .x{color:var(--fogo);margin:0 6px}
+
+/* sobre */
+.sobre{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.sobre img{width:100%;border-radius:16px;border:1px solid var(--line)}
+.pilares{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.pilares div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.pilares b{display:block;font-family:Cinzel,serif;color:var(--fogo2)}
+.pilares span{color:var(--muted);font-size:.9rem}
+
+/* contato */
+.contato{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+form{display:grid;gap:12px}
+input,textarea{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text);font:inherit}
+textarea{min-height:120px;resize:vertical}
+.canais a{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none}
+
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:.9rem;
+  background:linear-gradient(to top,rgba(255,122,26,.08),transparent)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+
+/* detalhe do animal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.8);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 16px}
+.modal.on{display:flex}
+.modal .box{background:var(--bg2);border:1px solid var(--line);border-radius:16px;max-width:900px;width:100%;overflow:hidden}
+.modal .topo{display:grid;grid-template-columns:1.2fr 1fr}
+.modal .topo .foto{aspect-ratio:auto;min-height:320px;height:min(560px,75vh)}
+.modal .info{padding:24px}
+.ficha{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:14px 0}
+.ficha dt{color:var(--muted)} .ficha dd{margin:0}
+.galeria{display:flex;gap:8px;padding:0 24px 20px;overflow-x:auto}
+.galeria img{height:80px;border-radius:8px;cursor:pointer}
+.gen{padding:0 24px 24px}
+.gen-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;overflow-x:auto}
+.gen .col{display:flex;flex-direction:column;justify-content:space-around;gap:6px}
+.gen .rot{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gen-rot{margin-bottom:6px}
+.curio{background:rgba(255,122,26,.08);border:1px solid #5a3a24;border-radius:12px;padding:12px 14px;margin:12px 0}
+.curio b{font-family:Cinzel,serif;color:var(--fogo2)}
+.curio p{margin:6px 0 0;font-size:.95rem}
+.curio::after{content:"";display:block;clear:both}
+.col-foto{display:flex;flex-direction:column;min-width:0}
+.destaque-foto{margin:0;padding:10px;background:#000;display:flex;flex-direction:column;min-height:0}
+.destaque-foto img{width:100%;display:block;border-radius:8px;cursor:zoom-in}
+.destaque-foto figcaption{font-size:.85rem;color:var(--fogo2);text-align:center;margin-top:6px}
+.curio-foto{float:right;width:120px;margin:0 0 8px 12px}
+.curio-foto img{width:100%;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;display:block}
+.curio-foto figcaption{font-size:.75rem;color:var(--muted);text-align:center;margin-top:4px}
+.curio ul{margin:8px 0 0;padding-left:18px;font-size:.95rem;display:grid;gap:4px}
+.gn{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--fogo);border-radius:8px;padding:6px 10px;font-size:.88rem}
+.gn.vazio-g{opacity:.45}
+.gn.destaque{background:rgba(255,122,26,.16);border-color:var(--fogo);color:var(--fogo2);font-weight:600}
+.curio.fil{border-color:var(--fogo)}
+.fechar{float:right;background:none;border:none;color:var(--text);font-size:1.6rem;cursor:pointer;padding:10px 16px}
+
+.zap-fixo{position:fixed;right:18px;bottom:18px;z-index:30;width:58px;height:58px;border-radius:50%;background:#1f9d55;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.zap-fixo svg{width:30px;height:30px;fill:#fff}
+.previa{background:#3a1d08;color:var(--fogo2);text-align:center;font-size:.85rem;padding:6px 16px}
+
+@media (max-width:820px){
+  .destaque-foto img{height:auto;flex:none;min-height:0}
+  .menu{display:none;position:absolute;top:68px;left:0;right:0;background:var(--bg2);flex-direction:column;padding:16px;gap:14px;border-bottom:1px solid var(--line)}
+  .menu.aberto{display:flex}
+  .burger{display:block}
+  .hero{min-height:auto}
+  .hero .bg-fogo{position:absolute;inset:0;width:100%;opacity:.28;-webkit-mask-image:none;mask-image:none}
+  .hero .logo-hero{width:110px;height:110px}
+  .sobre,.contato,.modal .topo{grid-template-columns:1fr}
+  .pilares{grid-template-columns:1fr}
+  section{padding:52px 0}
+}
+
+/* competições */
+.comp-bloco{margin-top:8px}
+.comp-bloco h3{font-size:1rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-family:"Source Sans 3",sans-serif;margin:26px 0 12px}
+.comp{display:grid;grid-template-columns:96px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;align-items:start}
+.comp .dia{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;padding:10px 0;background:var(--bg2);font-variant-numeric:tabular-nums}
+.comp .dia b{font-family:Cinzel,serif;font-size:1.7rem;line-height:1;color:var(--fogo2)}
+.comp .dia span{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.comp h4{margin:0 0 4px;font-family:Cinzel,serif;font-size:1.05rem;letter-spacing:.03em}
+.comp .res{display:inline-block;margin-top:6px;padding:2px 10px;border-radius:999px;background:rgba(255,122,26,.14);color:var(--fogo2);font-weight:600;font-size:.88rem}
+.comp .folder{margin-top:10px;max-width:220px;border-radius:8px;border:1px solid var(--line);cursor:zoom-in}
+.lista-comp{display:grid;gap:12px}
+.fonte{font-size:.8rem;color:var(--muted);margin-top:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="marca" href="#inicio"><img src="logo.jpg" alt="Logo GLAMAR"><b>GLAMAR</b></a>
+    <nav class="menu" id="menu">
+      <a href="#plantel">Plantel</a>
+      <a href="#competicoes">Competições</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#sobre">Quem somos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <button class="burger" aria-label="Abrir menu" onclick="document.getElementById('menu').classList.toggle('aberto')">☰</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero" id="inicio">
+    <img class="bg-fogo" src="cavalo-fogo.jpg" alt="">
+    <div class="wrap">
+      <div class="txt">
+        <img class="logo-hero" src="logo.jpg" alt="GLAMAR">
+        <h1>Genética, força e <span>paixão</span> pelo cavalo.</h1>
+        <p>Matrizes registradas de linhagens de destaque, preparadas para as pistas de marcha e para formar os próximos campeões da GLAMAR, em Minas Gerais.</p>
+        <div class="btns">
+          <a class="btn fogo" href="#plantel">Conheça o plantel</a>
+          <a class="btn sec" href="#competicoes">Competições</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="plantel">
+    <div class="wrap">
+      <div class="titulo">
+        <div><h2>Nosso plantel</h2><p>Matrizes registradas que formam a base da nossa criação. Clique para ver fotos e genealogia.</p></div>
+        <div class="filtros">
+          <select id="fRaca" aria-label="Filtrar por raça"><option value="">Todas as raças</option></select>
+        </div>
+      </div>
+      <div class="grade" id="gradeCavalos"></div>
+    </div>
+  </section>
+
+  <section id="competicoes">
+    <div class="wrap">
+      <div class="titulo"><div><h2>Competições</h2><p>Onde nossos animais estão competindo e o que já conquistaram.</p></div></div>
+      <div id="compAgenda" class="comp-bloco"></div>
+      <div id="compHist" class="comp-bloco"></div>
+    </div>
+  </section>
+
+  <section id="produtos">
+    <div class="wrap">
+      <div class="titulo"><div><h2>Produtos e embriões</h2><p>Os filhos do nosso plantel, de acasalamentos planejados com garanhões de destaque.</p></div></div>
+      <div class="grade" id="gradeEmbrioes"></div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="wrap sobre">
+      <div>
+        <h2>Sobre a GLAMAR</h2>
+        <p>Somos a GLAMAR, em Minas Gerais, dedicada à criação, ao preparo e à valorização de cavalos de qualidade. Cada animal recebe acompanhamento de alimentação, saúde e treinamento, com registros completos de reprodução e genealogia.</p>
+        <p>Venha nos visitar e conhecer de perto nossos animais.</p>
+        <div class="pilares">
+          <div><b>Genética</b><span>Linhagens selecionadas</span></div>
+          <div><b>Manejo</b><span>Saúde e nutrição controladas</span></div>
+          <div><b>Pista</b><span>Preparo para competições</span></div>
+        </div>
+      </div>
+      <img src="cavalo-fogo.jpg" alt="Cavalo em chamas, símbolo da GLAMAR">
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="wrap contato">
+      <div>
+        <h2>Fale conosco</h2>
+        <p class="meta">Tire dúvidas, agende uma visita ou reserve um produto da próxima geração.</p>
+        <div class="canais" id="canais"></div>
+      </div>
+      <form id="form">
+        <input id="cNome" placeholder="Seu nome" required>
+        <input id="cCidade" placeholder="Sua cidade">
+        <textarea id="cMsg" placeholder="Como podemos ajudar?" required></textarea>
+        <button class="btn zap" type="submit">Enviar pelo WhatsApp</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="marca"><img src="logo.jpg" alt="" style="width:36px;height:36px;border-radius:50%"><b style="font-family:Cinzel,serif">GLAMAR</b></div>
+    <div>© <span id="ano"></span> GLAMAR · Juatuba, Minas Gerais</div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)fechar()"><div class="box" id="modalBox"></div></div>
+
+<a class="zap-fixo" id="zapFixo" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6c-2 0-4-.5-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5 1-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.7 14.7 0 0 0 5.7 5c2.1.9 2.9 1 4 .8a3.4 3.4 0 0 0 2.2-1.6 2.8 2.8 0 0 0 .2-1.6c-.1-.2-.3-.3-.6-.4z"/></svg>
+</a>
+
+<script src="config.js"></script>
+<script src="dados.js"></script>
+<script>
+const D = window.GLAMAR;
+const SB = window.GLAMAR_SUPABASE;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const zap = txt => `https://wa.me/${D.whatsapp}?text=${encodeURIComponent(txt)}`;
+const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+let CAVALOS = D.cavalos.slice(), COMPS = (D.competicoes||[]).slice(), FONTE = "local";
+
+function idade(nasc){
+  if(!nasc) return "";
+  const n = new Date(nasc+"T12:00:00"), h = new Date();
+  let m = (h.getFullYear()-n.getFullYear())*12 + h.getMonth()-n.getMonth();
+  if (h.getDate() < n.getDate()) m--;
+  if (m < 12) return m + (m===1?" mês":" meses");
+  const a = Math.floor(m/12); return a + (a===1?" ano":" anos");
+}
+const bg = u => `style="background-image:url('${esc(u)}')"`;
+function fotoAttr(c, capa){ const u = (capa && c.capa) || (c.fotos && c.fotos[0]); return u ? `class="foto" style="--img:url('${esc(u)}')"` : `class="foto vazia"`; }
+function prefixoRegistro(raca, num){
+  if(!num || /registro|andamento|ABCCMM|ABQM/i.test(num)) return num || "";
+  if(/quarto de milha/i.test(raca||"")) return "ABQM " + num;
+  if(/mangalarga/i.test(raca||"")) return "ABCCMM " + num;
+  return num;
+}
+
+/* Busca no sistema de gestão (Supabase). Se não responder, fica com dados.js */
+async function rpc(nome){
+  const r = await fetch(`${SB.url}/rest/v1/rpc/${nome}`, {method:"POST",
+    headers:{apikey:SB.key, Authorization:"Bearer "+SB.key, "Content-Type":"application/json"}, body:"{}"});
+  if(!r.ok) throw new Error(nome+" "+r.status);
+  return r.json();
+}
+async function carregarDoSistema(){
+  if(!SB || !SB.url) return;
+  try{
+    const [plantel, comps] = await Promise.all([rpc("plantel_site"), rpc("competicoes_site")]);
+    const local = Object.fromEntries(D.cavalos.map(c => [c.id, c]));
+    CAVALOS = plantel.map(a => {
+      const l = local[a.id] || {}, g = a.genealogia || {};
+      return {
+        id:a.id, nome:a.nome, raca:a.raca, sexo:a.sexo, nascimento:a.nascimento, pelagem:a.pelagem,
+        registro: prefixoRegistro(a.raca, a.registro), modalidade: l.modalidade || (/marchador/i.test(a.raca||"")?"Marcha":""),
+        pai: g.p ? g.p.replace(/\s*\(.*\)/,"") : "Não informado", mae: g.m ? g.m.replace(/\s*\(.*\)/,"") : "Não informada",
+        genealogia: Object.fromEntries(Object.entries(g).map(([k,v]) => [k, String(v).replace(/\s*\(.*\)/,"")])),
+        fotos: (l.fotos && l.fotos.length) ? l.fotos : (a.foto ? [a.foto] : []),
+        capa: l.capa || "", video: l.video || "", descricao: l.descricao || ""
+      };
+    });
+    COMPS = comps;
+    FONTE = "sistema";
+  }catch(e){ console.warn("Sistema de gestão indisponível, usando dados locais.", e); }
+}
+
+/* plantel */
+function renderCavalos(){
+  const sel = $("fRaca"), atual = sel.value;
+  sel.innerHTML = `<option value="">Todas as raças</option>` + [...new Set(CAVALOS.map(c=>c.raca))].sort().map(r=>`<option${r===atual?" selected":""}>${esc(r)}</option>`).join("");
+  const lista = CAVALOS.filter(c => !sel.value || c.raca===sel.value);
+  $("gradeCavalos").innerHTML = lista.length ? lista.map(c => `
+    <article class="card">
+      <div ${fotoAttr(c,true)}><span class="selo plantel">${esc(c.registro)}</span></div>
+      <div class="corpo">
+        <h3>${esc(c.nome)}</h3>
+        <div class="meta">${esc(c.raca)} · ${esc(c.sexo)}${c.nascimento?" · "+idade(c.nascimento):""}</div>
+        <div class="meta">${esc(c.pelagem||"Pelagem não informada")}${c.modalidade?" · "+esc(c.modalidade):""}</div>
+        <div class="meta">${esc(c.pai)} × ${esc(c.mae)}</div>
+      </div>
+      <div class="acoes"><button class="btn sec" onclick="abrir('${esc(c.id)}')">Ver ficha completa</button></div>
+    </article>`).join("") : `<div class="vazio">Nenhum animal nesta raça.</div>`;
+}
+$("fRaca").onchange = renderCavalos;
+
+/* competições */
+function compCard(c){
+  const d = c.data ? new Date(c.data+"T12:00:00") : null;
+  const animal = c.animal ? `<div class="meta">Animal: <b>${esc(c.animal)}</b></div>` : "";
+  return `<article class="comp">
+    <div class="dia">${d?`<b>${d.getDate()}</b><span>${MESES[d.getMonth()]} ${d.getFullYear()}</span>`:"<span>a definir</span>"}</div>
+    <div>
+      <h4>${esc(c.evento || "Competição")}</h4>
+      <div class="meta">${[c.categoria, c.local].filter(Boolean).map(esc).join(" · ")}</div>
+      ${animal}
+      ${c.resultado?`<span class="res">${esc(c.resultado)}</span>`:""}
+      ${c.folder?`<div><img class="folder" src="${esc(c.folder)}" alt="Folder de ${esc(c.evento||"competição")}" onclick="verFolder(this.src)"></div>`:""}
+    </div>
+  </article>`;
+}
+function renderComps(){
+  const hoje = new Date().toISOString().slice(0,10);
+  const prox = COMPS.filter(c => c.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data));
+  const pass = COMPS.filter(c => c.data < hoje).sort((a,b)=>b.data.localeCompare(a.data));
+  $("compAgenda").innerHTML = `<h3>Próximas provas</h3>` + (prox.length ? `<div class="lista-comp">${prox.map(compCard).join("")}</div>`
+    : `<div class="vazio">Nenhuma prova agendada no momento. Acompanhe nosso Instagram para novidades.</div>`);
+  $("compHist").innerHTML = pass.length ? `<h3>Participações e resultados</h3><div class="lista-comp">${pass.map(compCard).join("")}</div>` : "";
+}
+function verFolder(src){
+  $("modalBox").innerHTML = `<button class="fechar" onclick="fechar()" aria-label="Fechar">×</button><img src="${esc(src)}" alt="Folder da competição" style="width:100%;display:block">`;
+  $("modal").classList.add("on");
+}
+
+/* produtos */
+function renderProdutos(){
+  const P = D.produtos||[], E = D.embrioes||[];
+  const cardsP = P.map(c => `
+    <article class="card">
+      <div ${fotoAttr(c,true)}><span class="selo plantel">Reprodução própria</span></div>
+      <div class="corpo">
+        <h3>${esc(c.nome)}</h3>
+        <div class="meta">${esc(c.raca)} · ${esc(c.sexo)}${c.nascimento?" · "+idade(c.nascimento):""}</div>
+        <div class="meta">${esc(c.pelagem||"")}</div>
+        <div class="meta">${esc(c.pai)} × ${esc(c.mae)}</div>
+      </div>
+      <div class="acoes"><button class="btn sec" onclick="abrir('${esc(c.id)}')">Ver ficha completa</button></div>
+    </article>`).join("");
+  const cardsE = E.map(e => `
+    <article class="card emb">
+      <div class="corpo">
+        <div class="par">${esc(e.garanhao)}<span class="x">×</span>${esc(e.doadora)}</div>
+        <div class="meta">${esc(e.raca)} · ${esc(e.previsao)}</div>
+        <p class="meta" style="margin:6px 0 0">${esc(e.descricao)}</p>
+      </div>
+      <div class="acoes"><a class="btn zap" target="_blank" rel="noopener" href="${zap(`Olá! Tenho interesse no produto ${e.garanhao} × ${e.doadora}, que vi no site da GLAMAR.`)}">Tenho interesse</a></div>
+    </article>`).join("");
+  $("gradeEmbrioes").innerHTML = (cardsP+cardsE) || `<div class="vazio">Os primeiros produtos do nosso plantel estão a caminho. Fale conosco para reservar.</div>`;
+}
+renderProdutos();
+
+/* ficha do animal */
+function abrir(id){
+  const c = CAVALOS.find(x => x.id===id) || (D.produtos||[]).find(x => x.id===id); if(!c) return;
+  const prod = (D.produtos||[]).some(x => x.id===id);
+  history.replaceState(null,"","#animal-"+id);
+  $("modalBox").innerHTML = `
+    <button class="fechar" onclick="fechar()" aria-label="Fechar">×</button>
+    <div class="topo">
+      <div class="col-foto"><div ${fotoAttr(c)} id="fotoGrande"></div>${(c.fotoDestaque||[]).map(f=>`<figure class="destaque-foto"><img src="${esc(f.src)}" alt="${esc(f.legenda)}" onclick="verFolder(this.src)"><figcaption>${esc(f.legenda)}</figcaption></figure>`).join("")}</div>
+      <div class="info">
+        <span class="selo plantel" style="position:static">${prod?"Reprodução própria GLAMAR":"Plantel GLAMAR"}</span>
+        <h2 style="margin-top:10px">${esc(c.nome)}</h2>
+        <dl class="ficha">
+          <dt>Raça</dt><dd>${esc(c.raca)}</dd>
+          <dt>Sexo</dt><dd>${esc(c.sexo)}</dd>
+          <dt>Idade</dt><dd>${idade(c.nascimento)||"-"}</dd>
+          <dt>Pelagem</dt><dd>${esc(c.pelagem||"-")}</dd>
+          <dt>Registro</dt><dd>${esc(c.registro||"-")}</dd>
+          <dt>Modalidade</dt><dd>${esc(c.modalidade||"-")}</dd>
+          <dt>Pai</dt><dd>${esc(c.pai)}</dd>
+          <dt>Mãe</dt><dd>${esc(c.mae)}</dd>
+        </dl>
+        <p class="meta">${esc(c.descricao)}</p>
+        ${c.filiacao?`<div class="curio fil"><b>Filiação</b><p>${esc(c.filiacao)}</p></div>`:""}
+        ${c.curiosidade?`<div class="curio"><b>Curiosidade</b><p>${esc(c.curiosidade)}</p></div>`:""}
+        ${c.reproducao?`<div class="curio"><b>Na reprodução</b><p>${esc(c.reproducao.intro)}</p><ul>${c.reproducao.itens.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>`:""}
+        <div class="btns"><a class="btn zap" target="_blank" rel="noopener" href="${zap(prod?`Olá! Vi ${c.nome} no site da GLAMAR e tenho interesse.`:`Olá! Vi ${c.nome} no site da GLAMAR e quero saber sobre os produtos dela.`)}">${prod?"Tenho interesse":"Perguntar sobre os produtos"}</a></div>
+      </div>
+    </div>
+    ${(c.fotos||[]).length>1?`<div class="galeria">${c.fotos.map(f=>`<img src="${esc(f)}" alt="" onclick="document.getElementById('fotoGrande').style.setProperty('--img','url(${esc(f)})')">`).join("")}</div>`:""}
+    ${compsDoAnimal(c)}
+    ${arvore(c.genealogia, c.destaquesGenealogia)}
+    ${c.video?`<div style="padding:0 24px 24px"><h3>Vídeo</h3><video src="${esc(c.video)}" controls playsinline preload="metadata" style="width:100%;max-height:480px;border-radius:12px;background:#000"></video></div>`:""}`;
+  $("modal").classList.add("on");
+}
+function compsDoAnimal(c){
+  const l = COMPS.filter(x => x.animalId===c.id || x.animal===c.nome).sort((a,b)=>b.data.localeCompare(a.data));
+  return l.length ? `<div class="gen"><h3>Competições</h3><div class="lista-comp">${l.map(compCard).join("")}</div></div>` : "";
+}
+function arvore(g, dest){
+  if(!g || !g.p) return "";
+  const d = dest || [];
+  const n = k => `<div class="gn${g[k]?"":" vazio-g"}${d.includes(g[k])?" destaque":""}">${esc(g[k]||"-")}${d.includes(g[k])?" ★":""}</div>`;
+  return `<div class="gen"><h3>Genealogia</h3>
+    <div class="gen-grid gen-rot"><span class="rot">Pais</span><span class="rot">Avós</span><span class="rot">Bisavós</span></div>
+    <div class="gen-grid">
+    <div class="col">${n("p")}${n("m")}</div>
+    <div class="col">${n("pp")}${n("pm")}${n("mp")}${n("mm")}</div>
+    <div class="col">${n("ppp")}${n("ppm")}${n("pmp")}${n("pmm")}${n("mpp")}${n("mpm")}${n("mmp")}${n("mmm")}</div>
+  </div></div>`;
+}
+function fechar(){ $("modal").classList.remove("on"); if(location.hash.startsWith("#animal-")) history.replaceState(null,"","#plantel"); }
+document.addEventListener("keydown", e => { if(e.key==="Escape") fechar(); });
+
+/* contato */
+$("zapFixo").href = zap("Olá! Vim pelo site da GLAMAR.");
+$("canais").innerHTML = `
+  <a target="_blank" rel="noopener" href="${zap("Olá! Vim pelo site da GLAMAR.")}">💬 WhatsApp</a>
+  <a target="_blank" rel="noopener" href="https://instagram.com/${esc(D.instagram)}">📷 @${esc(D.instagram)}</a>
+  ${D.email?`<a href="mailto:${esc(D.email)}">✉️ ${esc(D.email)}</a>`:""}
+  <a href="#sobre">📍 ${esc(D.cidade)}</a>`;
+$("form").onsubmit = e => {
+  e.preventDefault();
+  const t = `Olá! Sou ${$("cNome").value}${$("cCidade").value?" de "+$("cCidade").value:""}.\n${$("cMsg").value}`;
+  window.open(zap(t), "_blank");
+};
+document.querySelectorAll(".menu a").forEach(a => a.onclick = () => $("menu").classList.remove("aberto"));
+$("ano").textContent = new Date().getFullYear();
+
+function renderTudo(){
+  renderCavalos(); renderComps();
+}
+renderTudo();
+carregarDoSistema().then(() => { renderTudo(); if (location.hash.startsWith("#animal-")) abrir(location.hash.slice(8)); });
+</script>
+</body>
+</html>
