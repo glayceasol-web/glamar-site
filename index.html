@@ -152,17 +152,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 /* competições */
 .comp-bloco{margin-top:8px}
 .comp-bloco h3{font-size:1rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-family:"Source Sans 3",sans-serif;margin:26px 0 12px}
-.comp{display:grid;grid-template-columns:96px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;align-items:start}
-.comp .dia{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;padding:10px 0;background:var(--bg2);font-variant-numeric:tabular-nums}
-.comp .dia b{font-family:Cinzel,serif;font-size:1.7rem;line-height:1;color:var(--fogo2)}
-.comp .dia span{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.comp h4{margin:0 0 4px;font-family:Cinzel,serif;font-size:1.05rem;letter-spacing:.03em}
-.comp .res{display:inline-block;margin-top:6px;padding:2px 10px;border-radius:999px;background:rgba(255,122,26,.14);color:var(--fogo2);font-weight:600;font-size:.88rem}
-.comp .folder{margin-top:10px;max-width:220px;border-radius:8px;border:1px solid var(--line);cursor:zoom-in}
-.comp-txt{margin:8px 0 0;color:var(--muted)}
-.comp-galeria{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
-.comp-galeria img,.comp-galeria img.folder{width:100%;height:220px;object-fit:cover;object-position:center 35%;border-radius:10px;border:1px solid var(--line);cursor:zoom-in;margin:0;max-width:none}
-@media (max-width:820px){.comp-galeria{grid-template-columns:1fr 1fr}.comp-galeria img{height:170px}.comp{grid-template-columns:64px 1fr;gap:12px}}
+.comp{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:18px}
+.comp-topo{display:grid;gap:24px;align-items:center}
+.com-folder .comp-topo{grid-template-columns:minmax(260px,380px) 1fr}
+.comp-folder{width:100%;border-radius:12px;border:1px solid var(--line);cursor:zoom-in;display:block;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.comp h4{margin:0 0 14px;font-family:Cinzel,serif;font-size:clamp(1.3rem,2.6vw,1.8rem);line-height:1.2;letter-spacing:.03em}
+.comp-dados{margin:0;display:grid;gap:10px}
+.comp-dados div{display:grid;grid-template-columns:110px 1fr;gap:10px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.comp-dados dt{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
+.comp-dados dd{margin:0;font-weight:600}
+.comp .res{display:inline-block;margin-top:10px;padding:2px 10px;border-radius:999px;background:rgba(255,122,26,.14);color:var(--fogo2);font-weight:600;font-size:.88rem}
+.comp-txt{margin:14px 0 0;color:var(--muted);font-size:1.05rem}
+.comp-fotos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.comp-fotos img{width:100%;height:280px;object-fit:cover;object-position:center 35%;border-radius:12px;border:1px solid var(--line);cursor:zoom-in;display:block}
+@media (max-width:820px){.com-folder .comp-topo{grid-template-columns:1fr}.comp-folder{max-width:420px;margin:0 auto}.comp-fotos{grid-template-columns:1fr 1fr}.comp-fotos img{height:180px}.comp-fotos img:first-child{grid-column:1/-1;height:260px}.comp-dados div{grid-template-columns:96px 1fr}}
 .lista-comp{display:grid;gap:12px}
 .fonte{font-size:.8rem;color:var(--muted);margin-top:14px}
 
@@ -474,19 +477,23 @@ $("fRaca").onchange = renderCavalos;
 /* competições */
 function compCard(c){
   const d = c.data ? new Date(c.data+"T12:00:00") : null;
-  const animal = c.animal ? `<div class="meta">Animal: <b>${esc(c.animal)}</b></div>` : "";
-  return `<article class="comp">
-    <div class="dia">${d?`<b>${d.getDate()}</b><span>${MESES[d.getMonth()]} ${d.getFullYear()}</span>`:"<span>a definir</span>"}</div>
-    <div>
-      <h4>${esc(c.evento || "Competição")}</h4>
-      <div class="meta">${[c.categoria, c.local].filter(Boolean).map(esc).join(" · ")}</div>
-      ${animal}
-      ${c.texto?`<p class="comp-txt">${esc(c.texto)}</p>`:""}
-      ${c.resultado?`<span class="res">${esc(c.resultado)}</span>`:""}
-      ${(c.fotos&&c.fotos.length)||c.folder?`<div class="comp-galeria">${(c.fotos||[]).map(f=>`<img src="${esc(f)}" alt="${esc(c.animal||"")} em ${esc(c.evento||"competição")}" loading="lazy" onclick="verFolder(this.src)">`).join("")}${c.folder?`<img class="folder" src="${esc(c.folder)}" alt="Folder de ${esc(c.evento||"competição")}" loading="lazy" onclick="verFolder(this.src)">`:""}</div>`:""}
+  const dataTxt = d ? `${d.getDate()} de ${MESES_LONGOS[d.getMonth()]} de ${d.getFullYear()}` : "A definir";
+  const itens = [["Data", dataTxt], ["Local", c.local], ["Modalidade", c.categoria], ["Animal", c.animal]].filter(x => x[1]);
+  const fotos = c.fotos || [];
+  return `<article class="comp${c.folder?" com-folder":""}">
+    <div class="comp-topo">
+      ${c.folder?`<img class="comp-folder" src="${esc(c.folder)}" alt="Folder de ${esc(c.evento||"competição")}" onclick="verFolder(this.src)">`:""}
+      <div class="comp-info">
+        <h4>${esc(c.evento || "Competição")}</h4>
+        <dl class="comp-dados">${itens.map(([k,v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+        ${c.texto?`<p class="comp-txt">${esc(c.texto)}</p>`:""}
+        ${c.resultado?`<span class="res">${esc(c.resultado)}</span>`:""}
+      </div>
     </div>
+    ${fotos.length?`<div class="comp-fotos">${fotos.map(f=>`<img src="${esc(f)}" alt="${esc(c.animal||"")} em ${esc(c.evento||"competição")}" loading="lazy" onclick="verFolder(this.src)">`).join("")}</div>`:""}
   </article>`;
 }
+const MESES_LONGOS = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 function renderComps(){
   const hoje = new Date().toISOString().slice(0,10);
   const prox = COMPS.filter(c => c.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data));
