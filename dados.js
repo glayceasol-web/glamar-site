@@ -242,7 +242,21 @@ window.GLAMAR = {
   ],
 
   // Competições (reserva; normalmente vêm do sistema de gestão)
-  competicoes: [],
+  competicoes: [
+    {
+      "id": "copa-marcha-2026-08-15",
+      "data": "2026-08-15",
+      "evento": "1ª Copa de Marcha Mangalarga Marchador",
+      "local": "Azurita, Mateus Leme (MG)",
+      "categoria": "Marcha",
+      "animal": "Bela do Magnus",
+      "animalId": "abccmm-0249987",
+      "resultado": "",
+      "texto": "Nossa estreia em campeonato de marcha. Um dia de muito aprendizado para a Bela e para toda a equipe GLAMAR, o primeiro de muitos.",
+      "folder": "fotos/competicoes/folder-copa-marcha-2026.jpg",
+      "fotos": ["fotos/competicoes/bela-copa-marcha-1.jpg", "fotos/competicoes/bela-copa-marcha-2.jpg", "fotos/competicoes/bela-copa-marcha-3.jpg"]
+    }
+  ],
 
   // Produtos da reprodução (potros nascidos na GLAMAR)
   produtos: [
